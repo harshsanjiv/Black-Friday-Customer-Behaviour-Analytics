@@ -1,0 +1,78 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+from scipy import stats
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+
+# Load the dataset
+black_friday_data = pd.read_csv('train.csv')  # Update this path if necessary
+
+# Data Cleaning and Feature Engineering
+# Handle missing values by filling with 0 or an appropriate method
+black_friday_data.fillna(0, inplace=True)
+
+# Add a column for total purchase per customer (group by User_ID)
+customer_purchase = black_friday_data.groupby('User_ID')['Purchase'].sum().reset_index()
+customer_purchase.rename(columns={'Purchase': 'Total_Purchase'}, inplace=True)
+
+# Merge total purchase data back with the original dataset
+black_friday_data = black_friday_data.merge(customer_purchase, on='User_ID', how='left')
+
+# Create Age Category and convert categorical columns to categories
+black_friday_data['Age'] = black_friday_data['Age'].astype('category')
+black_friday_data['Gender'] = black_friday_data['Gender'].astype('category')
+black_friday_data['City_Category'] = black_friday_data['City_Category'].astype('category')
+
+# Hypothesis Testing using A/B Testing
+# A/B Test: Compare purchase behavior between males and females on Black Friday
+male_purchase = black_friday_data[black_friday_data['Gender'] == 'M']['Purchase']
+female_purchase = black_friday_data[black_friday_data['Gender'] == 'F']['Purchase']
+
+# T-test to see if there is a statistically significant difference
+t_stat, p_val = stats.ttest_ind(male_purchase, female_purchase)
+print(f"A/B Testing Results: T-statistic = {t_stat}, p-value = {p_val}")
+
+# Difference-in-Differences (DiD) Analysis
+# Hypothesis: City Category A vs. Category B's response to Black Friday deals
+city_a = black_friday_data[black_friday_data['City_Category'] == 'A']['Purchase']
+city_b = black_friday_data[black_friday_data['City_Category'] == 'B']['Purchase']
+
+# DiD Analysis using the average purchase before and after a hypothetical promotion
+before_promotion = city_a.mean()  # Assume this is 'before'
+after_promotion = city_b.mean()   # Assume this is 'after'
+diff_in_diff = after_promotion - before_promotion
+print(f"Difference-in-Differences (DiD) Results: DiD Estimate = {diff_in_diff}")
+
+# ANOVA Analysis: Testing Age Group Influence on Purchase
+# Hypothesis: Different age groups have different average purchase amounts
+
+# Perform ANOVA test
+model = ols('Purchase ~ C(Age)', data=black_friday_data).fit()
+anova_table = sm.stats.anova_lm(model, typ=2)
+print("ANOVA Results:")
+print(anova_table)
+
+# Data Visualization
+# Boxplot for A/B Testing result by Gender
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='Gender', y='Purchase', data=black_friday_data)
+plt.title("Boxplot of Purchases by Gender")
+plt.show()
+
+# Barplot for Average Purchase by City Category
+plt.figure(figsize=(8, 6))
+sns.barplot(x='City_Category', y='Purchase', data=black_friday_data, estimator=np.mean)
+plt.title("Average Purchase by City Category")
+plt.show()
+
+# Boxplot for ANOVA test results across Age Groups
+plt.figure(figsize=(10, 8))
+sns.boxplot(x='Age', y='Purchase', data=black_friday_data)
+plt.title("Purchase Distribution by Age Group")
+plt.show()
+
