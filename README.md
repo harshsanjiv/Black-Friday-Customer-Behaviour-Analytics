@@ -60,3 +60,20 @@ This project analyzes Black Friday sales data to evaluate customer behavior, pro
 3. python file Code file version 1
 4. Replace train.csv with the dataset file if needed.
 
+## **Statistical Analysis Results**  
+
+### **1. A/B Testing (T-test for Male vs. Female Purchase Behavior)**  
+- **T-statistic**: **44.84**  
+- **P-value**: **0.0**  
+  - Highly significant, indicating a strong difference in purchase behavior between genders.  
+
+### **2. Difference-in-Differences (DiD) Analysis (City Category A vs. B)**  
+- **DiD Estimate**: **239.36**  
+  - Suggests that City Category B had a higher purchase average after Black Friday compared to City Category A.  
+
+### **3. ANOVA Test (Effect of Age Group on Purchase Behavior)**  
+- **F-statistic**: **40.58**  
+- **P-value**: **1.05 × 10⁻⁴⁹**  
+  - Very significant, indicating that different age groups have statistically different purchasing behaviors.  
+
+
