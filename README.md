@@ -14,7 +14,7 @@ This project analyzes Black Friday sales data to evaluate customer behavior, pro
 
 ## **Key Steps**
 1. **Data Cleaning and Feature Engineering**:
-   - Handled missing data by filling with zeroes.
+   - Handled missing data.
    - Created a new feature for total customer purchase.
 
 2. **Statistical Analysis**:
