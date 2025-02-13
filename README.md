@@ -60,6 +60,8 @@ This project analyzes Black Friday sales data to evaluate customer behavior, pro
 3. python file Code file version 1
 4. Replace train.csv with the dataset file if needed.
 
+---
+
 ## **Statistical Analysis Results**  
 
 ### **1. A/B Testing (T-test for Male vs. Female Purchase Behavior)**  
