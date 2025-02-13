@@ -57,6 +57,6 @@ This project analyzes Black Friday sales data to evaluate customer behavior, pro
    ```bash
    git clone https://github.com/yourusername/black-friday-analytics.git
 2. pip install -r requirements.txt
-3. python analysis.py
+3. python file Code file version 1
 4. Replace train.csv with the dataset file if needed.
 
